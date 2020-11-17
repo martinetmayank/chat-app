@@ -17,28 +17,18 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath))
 
-let count = 0
-
-/**
- * Here we have a 'server' which 'emits' an event
- * and client 'recieves', which is 'countUpdated'
- *
- * *This is on `Chat.js`
- * And we have a 'client' which 'emits' an event
- * and server 'recieves', which is 'increment'
- */
+// Sending "Welcome message to all the client
 
 io.on('connection', (socket) => {
     console.log('New Websocket connection...')
 
-    socket.emit('countUpdated', count)
+    const welcomeMsg = 'Welcome!'
+    socket.emit('message', welcomeMsg)
 
-    socket.on('increment', () => {
-        count++
-
-        // socket.emit('countUpdated', count)
-        io.emit('countUpdated', count)
+    socket.on('sendMessage', (message) => {
+        io.emit('message', message)
     })
+
 })
 
 server.listen(port, () => {

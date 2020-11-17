@@ -1,18 +1,17 @@
 const socket = io()
 
-/**
- * Here `count` is a parameter which we get when
- * server 'emits' some data.
- * All the data passed from server can be accessed
- * via callback function.
- */
+//  Here `message` is a parameter which we,
+//  client 'emits' to the server
+//  and 'sendMessage' is the event name.
 
-socket.on('countUpdated', (count) => {
-    console.log('Count has been updated!', count)
+const messageForm = document.querySelector("#message-form")
+messageForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const message = document.querySelector("#enterMessage").value
+    socket.emit('sendMessage', message)
 })
 
-const incrementBtn = document.querySelector('#increment')
-incrementBtn.addEventListener('click', () => {
-    console.log('Clicked')
-    socket.emit('increment')
+socket.on('message', (message) => {
+    console.log(message)
 })

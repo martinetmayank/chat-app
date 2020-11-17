@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <!-- <link rel="stylesheet" href="/public/css/styles.css"> -->
+    <link rel="stylesheet" href="./css/styles.css">
     <title>
         Chat app
     </title>
@@ -9,7 +11,12 @@
 
 <body>
     Chat App.
-    <button id="increment">+1</button>
+
+    <form id="message-form">
+        <input id="enterMessage" placeholder="Message">
+        <button id="sendMessage">Send</button>
+    </form>
+
     <script src="/socket.io/socket.io.js "></script>
     <script src="js/chat.js"></script>
 </body>
