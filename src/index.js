@@ -22,11 +22,21 @@ app.use(express.static(publicDirectoryPath))
 io.on('connection', (socket) => {
     console.log('New Websocket connection...')
 
+    socket.broadcast.emit('message', 'A new user has joined.')
+
     const welcomeMsg = 'Welcome!'
     socket.emit('message', welcomeMsg)
 
     socket.on('sendMessage', (message) => {
         io.emit('message', message)
+    })
+
+    socket.on('sendLocation', (coordinates) => {
+        io.emit('message', `https://google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`)
+    })
+
+    socket.on('disconnect', () => {
+        io.emit('message', 'A user has left.')
     })
 
 })
