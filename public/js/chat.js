@@ -9,7 +9,12 @@ messageForm.addEventListener('submit', (e) => {
     e.preventDefault()
 
     const message = document.querySelector("#enterMessage").value
-    socket.emit('sendMessage', message)
+    socket.emit('sendMessage', message, (error) => {
+        if (error) {
+            return console.log(error)
+        }
+        console.log('Message delivered!')
+    })
 })
 
 socket.on('message', (message) => {
@@ -27,6 +32,8 @@ locationBtn.addEventListener('click', () => {
         socket.emit('sendLocation', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
+        }, () => {
+            console.log('Location shared!')
         })
     })
 
