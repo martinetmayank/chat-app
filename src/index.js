@@ -31,7 +31,8 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', (message, callback) => {
         const filter = new Filter()
         if (filter.isProfane(message)) {
-            return callback('Profanity is not allowed!')
+            console.log(message, 'is profane.')
+            return callback(`${message} is not allowed!`)
         }
 
         io.emit('message', message)
