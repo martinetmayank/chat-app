@@ -2,33 +2,51 @@
 <html>
 
 <head>
-    <!-- <link rel="stylesheet" href="/public/css/styles.css"> -->
-    <!-- <link rel="stylesheet" href="./css/styles.css"> -->
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.min.css">
     <title>
         Chat app
     </title>
 </head>
 
 <body>
-    Chat App.
-    <div id="messages"></div>
+    <div class="chat">
+        <div class="chat__sidebar">
 
-    <form id="message-form">
-        <input id="enterMessage" placeholder="Message">
-        <button id="sendMessage">Send</button>
-    </form>
-    <button id="send-location">Send Location</button>
+        </div>
+        <div class="chat__main">
+            <div id="messages" class="chat__messages"></div>
+
+            <div class="compose">
+                <form id="message-form">
+                    <input id="enterMessage" placeholder="Message">
+                    <button id="sendMessage">Send</button>
+                </form>
+
+                <button id="send-location">Send Location</button>
+            </div>
+
+        </div>
+    </div>
 
     <script id="message-template" type="text/html">
-        <div>
-            <p>{{createdAt}} - {{message}}</p>
+        <div class="message">
+            <p>
+                <span class="message__name">Some user name here</span>
+                <span class="message__meta">{{createdAt}}</span>
+            </p>
+            <p>{{message}}</p>
         </div>
     </script>
 
     <script id="location-message-template" type="text/html">
-        <div>
+        <div class="message">
             <p>
-                {{createdAt}} - <a href="{{url}}" target="_black">
+                <span class="message__name">Some user name here</span>
+                <span class="message__meta">{{createdAt}}</span>
+            </p>
+            <p>
+                <a href="{{url}}" target="_black">
                     My current location
                 </a>
             </p>
