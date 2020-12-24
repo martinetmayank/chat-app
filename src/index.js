@@ -12,16 +12,11 @@ const {
 const {
     addUser,
     removeUser,
-    getuser,
+    getUser,
     getUsersInRomm
 } = require('./utils/users')
 
 const app = express()
-
-/**
- * Socket.io requires a raw http server.
- * That's why we had created a 'server'
- */
 const server = http.createServer(app)
 const io = socketio(server)
 
@@ -54,27 +49,31 @@ io.on('connection', (socket) => {
 
         socket.join(user.room)
 
-        socket.emit('message', generateMessage('Welcome!'))
-        socket.broadcast.to(user.room).emit('message', generateMessage(`${user.username} has joined`))
+        socket.emit('message', generateMessage('System', 'Welcome!'))
+        socket.broadcast.to(user.room).emit('message', generateMessage('System', `${user.username} has joined`))
 
         callback()
 
     })
 
     socket.on('sendMessage', (message, callback) => {
+        const user = getUser(socket.id)
         const filter = new Filter()
         if (filter.isProfane(message)) {
             console.log(message, 'is profane.')
             return callback(`${message} is not allowed!`)
         }
 
-        io.to('home').emit('message', generateMessage(message))
+        io.to(user.room).emit('message', generateMessage(user.username, message))
         callback()
     })
 
     socket.on('sendLocation', (coordinates, callback) => {
-        const location = `https://google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`
-        io.emit('locationMessage', generateLocationMessage(location))
+        const user = getUser(socket.id)
+        const url = `https://google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`
+
+        io.to(user.room).emit('locationMessage', generateLocationMessage(user.username, url))
+
         callback()
     })
 
@@ -82,7 +81,7 @@ io.on('connection', (socket) => {
         const user = removeUser(socket.id)
 
         if (user) {
-            io.to(user.room).emit('message', generateMessage(`${user.username} left the room.`))
+            io.to(user.room).emit('message', generateMessage('System', `${user.username} left the room.`))
         }
     })
 

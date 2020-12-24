@@ -50,7 +50,7 @@ const removeUser = (id) => {
     }
 }
 
-const getuser = (id) => {
+const getUser = (id) => {
     return users.find((user) => user.id === id)
 }
 
@@ -63,6 +63,6 @@ const getUsersInRomm = (room) => {
 module.exports = {
     addUser,
     removeUser,
-    getuser,
+    getUser,
     getUsersInRomm
 }
